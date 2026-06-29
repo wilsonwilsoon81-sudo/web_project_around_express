@@ -1,0 +1,34 @@
+{
+  "name": "web_project_around_express",
+  "version": "1.0.0",
+  "description": "Backend for Around the U.S. project",
+  "keywords": [
+    "node",
+    "express",
+    "backend",
+    "api"
+  ],
+  "homepage": "https://github.com/wilsonwilsoon81-sudo/web_project_around_express#readme",
+  "bugs": {
+    "url": "https://github.com/wilsonwilsoon81-sudo/web_project_around_express/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/wilsonwilsoon81-sudo/web_project_around_express.git"
+  },
+  "license": "ISC",
+  "author": "Wilson Rolando Herrera Romero",
+  "type": "commonjs",
+  "main": "app.js",
+  "scripts": {
+    "start": "node app.js",
+    "dev": "nodemon app.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "dependencies": {
+    "express": "^5.2.1"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.14"
+  }
+}
