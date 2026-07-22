@@ -1,7 +1,19 @@
 const express = require('express');
+const mongoose = require('mongoose');
 
 const app = express();
 const { PORT = 3000 } = process.env;
+
+mongoose.connect('mongodb://localhost:27017/aroundb', {
+  useNewUrlParser: true,
+  useUnifiedTopology: true,
+})
+  .then(() => {
+    console.log('✅ Conectado a la base de datos: aroundb');
+  })
+  .catch((err) => {
+    console.log('❌ Error al conectar a MongoDB:', err);
+  });
 
 const usersRouter = require('./routes/users');
 const cardsRouter = require('./routes/cards');
