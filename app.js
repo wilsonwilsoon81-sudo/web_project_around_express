@@ -15,6 +15,11 @@ mongoose.connect('mongodb://localhost:27017/aroundb')
     console.log('❌ Error al conectar a MongoDB:', err);
   });
 
+app.use((req, res, next) => {
+  req.user = { _id: '6a6149b75e6e30c570b606a9' };
+  next();
+});
+
 const usersRouter = require('./routes/users');
 const cardsRouter = require('./routes/cards');
 
