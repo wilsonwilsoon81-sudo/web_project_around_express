@@ -2,11 +2,9 @@ const Card = require('../models/card');
 
 const getCards = (req, res) => {
   Card.find({})
-    .then((cards) => {
-      res.status(200).send(cards);
-    })
-    .catch((err) => {
-      res.status(500).send({ message: 'Error al obtener las tarjetas', error: err.message });
+    .then((cards) => res.status(200).send(cards))
+    .catch(() => {
+      res.status(500).send({ message: 'Error interno del servidor' });
     });
 };
 
@@ -20,32 +18,30 @@ const createCard = (req, res) => {
     })
     .catch((err) => {
       if (err.name === 'ValidationError') {
-        return res.status(400).send({ message: 'Datos inválidos', error: err.message });
+        return res.status(400).send({ message: 'Datos inválidos' });
       }
-      return res.status(500).send({ message: 'Error al crear la tarjeta', error: err.message });
+      return res.status(500).send({ message: 'Error interno del servidor' });
     });
 };
 
 const deleteCard = (req, res) => {
-  const { cardId } = req.params;
-
-  Card.findByIdAndDelete(cardId)
+  Card.findByIdAndDelete(req.params.cardId)
     .orFail(() => {
-      const error = new Error('Tarjeta no encontrada');
-      error.statusCode = 404;
-      throw error;
+      const err = new Error('Tarjeta no encontrada');
+      err.statusCode = 404;
+      throw err;
     })
     .then((card) => {
       res.status(200).send({ message: 'Tarjeta eliminada', card });
     })
     .catch((err) => {
       if (err.name === 'CastError') {
-        return res.status(400).send({ message: 'ID inválido' });
+        return res.status(400).send({ message: 'ID de tarjeta inválido' });
       }
       if (err.statusCode === 404) {
         return res.status(404).send({ message: err.message });
       }
-      return res.status(500).send({ message: 'Error al eliminar la tarjeta', error: err.message });
+      return res.status(500).send({ message: 'Error interno del servidor' });
     });
 };
 
