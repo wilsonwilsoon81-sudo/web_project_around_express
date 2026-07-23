@@ -44,8 +44,60 @@ const createUser = (req, res) => {
     });
 };
 
+const updateUserProfile = (req, res) => {
+  const { name, about } = req.body;
+
+  User.findByIdAndUpdate(
+    req.user._id,
+    { name, about },
+    { new: true, runValidators: true },
+  )
+    .orFail(() => {
+      const err = new Error('Usuario no encontrado');
+      err.statusCode = 404;
+      throw err;
+    })
+    .then((user) => res.status(200).send(user))
+    .catch((err) => {
+      if (err.name === 'CastError' || err.name === 'ValidationError') {
+        return res.status(400).send({ message: 'Datos inválidos' });
+      }
+      if (err.statusCode === 404) {
+        return res.status(404).send({ message: err.message });
+      }
+      return res.status(500).send({ message: 'Error interno del servidor' });
+    });
+};
+
+const updateUserAvatar = (req, res) => {
+  const { avatar } = req.body;
+
+  User.findByIdAndUpdate(
+    req.user._id,
+    { avatar },
+    { new: true, runValidators: true },
+  )
+    .orFail(() => {
+      const err = new Error('Usuario no encontrado');
+      err.statusCode = 404;
+      throw err;
+    })
+    .then((user) => res.status(200).send(user))
+    .catch((err) => {
+      if (err.name === 'CastError' || err.name === 'ValidationError') {
+        return res.status(400).send({ message: 'Datos inválidos' });
+      }
+      if (err.statusCode === 404) {
+        return res.status(404).send({ message: err.message });
+      }
+      return res.status(500).send({ message: 'Error interno del servidor' });
+    });
+};
+
 module.exports = {
   getUsers,
   getUserById,
   createUser,
+  updateUserProfile,
+  updateUserAvatar,
 };
