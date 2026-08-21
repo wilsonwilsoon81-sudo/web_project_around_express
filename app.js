@@ -22,9 +22,13 @@ app.use((req, res, next) => {
 
 const usersRouter = require('./routes/users');
 const cardsRouter = require('./routes/cards');
+const { createUser, login } = require('./controllers/users');
 
 app.use('/users', usersRouter);
 app.use('/cards', cardsRouter);
+
+app.post('/signup', createUser);
+app.post('/signin', login);
 
 app.use((req, res) => {
   res.status(404).send({ message: 'Recurso solicitado no encontrado' });
