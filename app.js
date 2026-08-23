@@ -7,6 +7,33 @@ const { PORT = 3000 } = process.env;
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
+const allowedCors = [
+  'https://wilson-around.mooo.com',
+  'https://www.wilson-around.mooo.com',
+  'http://localhost:3000',
+  'http://localhost:3001',
+];
+
+app.use((req, res, next) => {
+  const { origin } = req.headers;
+  const { method } = req;
+  const DEFAULT_ALLOWED_METHODS = 'GET,HEAD,PUT,PATCH,POST,DELETE';
+  const requestHeaders = req.headers['access-control-request-headers'];
+
+  if (allowedCors.includes(origin)) {
+    res.header('Access-Control-Allow-Origin', origin);
+    res.header('Access-Control-Allow-Credentials', true);
+  }
+
+  if (method === 'OPTIONS') {
+    res.header('Access-Control-Allow-Methods', DEFAULT_ALLOWED_METHODS);
+    res.header('Access-Control-Allow-Headers', requestHeaders);
+    return res.end();
+  }
+
+  return next();
+});
+
 mongoose.connect('mongodb://localhost:27017/aroundb')
   .then(() => {
     console.log('✅ Conectado a la base de datos: aroundb');
